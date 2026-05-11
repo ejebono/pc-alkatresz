@@ -2,8 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.model.Part;
 import com.example.demo.repository.PartRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor; // <--- Ez fontos!
+import org.springframework.stereotype.Service; // <--- Ez is!
 import java.util.List;
 
 @Service
