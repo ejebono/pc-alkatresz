@@ -1,0 +1,26 @@
+package com.example.demo.service;
+
+import com.example.demo.model.Part;
+import com.example.demo.repository.PartRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PartService {
+
+    private final PartRepository partRepository;
+
+    public List<Part> getAllParts() {
+        return partRepository.findAll();
+    }
+
+    public Part savePart(Part part) {
+        return partRepository.save(part);
+    }
+
+    public void deletePart(Long id) {
+        partRepository.deleteById(id);
+    }
+}
