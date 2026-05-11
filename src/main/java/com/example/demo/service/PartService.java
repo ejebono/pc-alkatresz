@@ -23,4 +23,15 @@ public class PartService {
     public void deletePart(Long id) {
         partRepository.deleteById(id);
     }
+
+    public Part updatePart(Long id, Part details) {
+        Part part = partRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Nincs ilyen alkatrész!"));
+
+        part.setBrand(details.getBrand());
+        part.setModelName(details.getModelName());
+        part.setPrice(details.getPrice());
+
+        return partRepository.save(part);
+    }
 }
