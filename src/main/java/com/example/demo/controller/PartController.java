@@ -15,17 +15,30 @@ public class PartController {
     private final PartService partService;
 
     @GetMapping
-    public List<Part> getParts() {
+    public List<Part> getAll() {
         return partService.getAllParts();
     }
 
+    @GetMapping("/{id}")
+    public Part getById(@PathVariable Long id) {
+        return partService.getAllParts().stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     @PostMapping
-    public Part addPart(@RequestBody Part part) {
+    public Part create(@RequestBody Part part) {
         return partService.savePart(part);
     }
 
+    @PutMapping("/{id}")
+    public Part update(@PathVariable Long id, @RequestBody Part part) {
+        return partService.updatePart(id, part);
+    }
+
     @DeleteMapping("/{id}")
-    public void removePart(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         partService.deletePart(id);
     }
 }
