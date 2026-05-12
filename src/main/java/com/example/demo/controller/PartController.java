@@ -21,10 +21,7 @@ public class PartController {
 
     @GetMapping("/{id}")
     public Part getById(@PathVariable Long id) {
-        return partService.getAllParts().stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+        return partService.getAllParts().stream().filter(p -> p.getId().equals(id)).findFirst().orElse(null);
     }
 
     @PostMapping
