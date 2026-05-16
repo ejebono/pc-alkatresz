@@ -2,37 +2,42 @@ package com.example.demo.service;
 
 import com.example.demo.model.Part;
 import com.example.demo.repository.PartRepository;
-import lombok.RequiredArgsConstructor; // <--- Ez fontos!
-import org.springframework.stereotype.Service; // <--- Ez is!
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PartService {
 
-    private final PartRepository partRepository;
+    @Autowired
+    private PartRepository partRepository;
 
-    public List<Part> getAllParts() {
-        return partRepository.findAll();
-    }
-
+    // Létrehozás
     public Part savePart(Part part) {
         return partRepository.save(part);
     }
 
-    public void deletePart(Long id) {
-        partRepository.deleteById(id);
+    // Olvasás
+    public List<Part> getAllParts() {
+        return partRepository.findAll();
     }
 
-    public Part updatePart(Long id, Part details) {
+    //
+    public Part updatePart(Long id, Part partDetails) {
         Part part = partRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Nincs ilyen alkatrész!"));
+                .orElseThrow(() -> new RuntimeException("Part not found with id: " + id));
 
-        part.setBrand(details.getBrand());
-        part.setModelName(details.getModelName());
-        part.setPrice(details.getPrice());
+        if (partDetails.getBrand() != null) part.setBrand(partDetails.getBrand());
+        if (partDetails.getModelName() != null) part.setModelName(partDetails.getModelName());
+        if (partDetails.getPrice() != null) part.setPrice(partDetails.getPrice());
 
         return partRepository.save(part);
+    }
+
+    // Törlés
+    public void deletePart(Long id) {
+        Part part = partRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Part not found with id: " + id));
+        partRepository.delete(part);
     }
 }

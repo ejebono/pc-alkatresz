@@ -17,24 +17,44 @@ class PartServiceTest {
 
     @Test
     void testPartWorkflow() {
+        // 1. CREATE
         Part part = new Part();
-        part.setBrand("MSI");
-        part.setModelName("RTX 4060");
-        part.setPrice(120000);
+        part.setBrand("Intel");
+        part.setModelName("i7-14700K");
+        part.setPrice(160000.0);
 
         Part saved = partService.savePart(part);
         assertNotNull(saved.getId());
-        assertEquals("MSI", saved.getBrand());
+        assertEquals("Intel", saved.getBrand());
 
+        // 2. READ
         List<Part> parts = partService.getAllParts();
         assertFalse(parts.isEmpty());
 
+        // 3. UPDATE
         Part details = new Part();
-        details.setPrice(110000);
+        details.setPrice(155000.0);
         Part updated = partService.updatePart(saved.getId(), details);
-        assertEquals(110000, updated.getPrice());
+        assertEquals(155000.0, updated.getPrice());
 
+        // 4. DELETE
         partService.deletePart(saved.getId());
-        assertTrue(partService.getAllParts().isEmpty());
+        boolean exists = partService.getAllParts().stream()
+                .anyMatch(p -> p.getId().equals(saved.getId()));
+        assertFalse(exists);
+    }
+
+    @Test
+    void testUpdatePartNotFoundThrowsException() {
+        assertThrows(RuntimeException.class, () -> {
+            partService.updatePart(-1L, new Part());
+        });
+    }
+
+    @Test
+    void testDeletePartNotFoundThrowsException() {
+        assertThrows(RuntimeException.class, () -> {
+            partService.deletePart(-1L);
+        });
     }
 }
